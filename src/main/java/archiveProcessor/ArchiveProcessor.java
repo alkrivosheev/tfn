@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.*;
 import java.util.zip.*;
-
 import com.github.junrar.exception.RarException;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -30,6 +29,14 @@ public class ArchiveProcessor extends JFrame {
     private Properties config;
 
     public ArchiveProcessor() {
+        setTitle("Archive Processor");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        initUI();
+    }
+
+    public ArchiveProcessor(Properties config) {
+        this.config = config;
         setTitle("Archive Processor");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -118,7 +125,7 @@ public class ArchiveProcessor extends JFrame {
         logger.info("Processing complete for archive: " + archivePath);
     }
 
-    private void unzip(String archivePath, String destDir) throws ZipException {
+    void unzip(String archivePath, String destDir) throws ZipException {
         ZipFile zipFile = new ZipFile(archivePath);
         zipFile.extractAll(destDir);
         logger.info("Unzipped archive: " + archivePath + " to directory: " + destDir);
@@ -158,7 +165,7 @@ public class ArchiveProcessor extends JFrame {
         logger.info("Zipped directory: " + sourceDirPath + " to archive: " + zipFilePath);
     }
 
-    private void processFiles(String dir) throws IOException {
+    void processFiles(String dir) throws IOException {
         List<Path> fileList = new ArrayList<>();
         Files.walk(Paths.get(dir)).filter(Files::isRegularFile).forEach(fileList::add);
 
@@ -174,7 +181,7 @@ public class ArchiveProcessor extends JFrame {
         }
     }
 
-    private String replaceContent(String content) {
+    String replaceContent(String content) {
         String ipPattern = "\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b";
         String computerNamePattern = "\\b[A-Za-z0-9_-]{1,15}\\b";
         String userNamePattern = "\\b[A-Za-z0-9_-]{1,15}\\b";
